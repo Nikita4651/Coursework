@@ -1,51 +1,38 @@
 package ru.netology.Data;
 
-import com.google.common.base.Verify;
+
+import com.github.javafaker.Faker;
+
 import lombok.Value;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class DataHelper {
+    private static final Faker FAKER = new Faker(new Locale("en"));
+
     private DataHelper() {
-
     }
 
-    public static VerificationCode getVerificationCode() {
-        return new VerificationCode("12345");
+    public static AuthInfo getApprovedCard() {
+        return new AuthInfo("1111222233334444", "123");
     }
 
-    public static AuthInfo getAuthInfo() {
-        return new AuthInfo("vasya", "qwerty123");
+    public static String generateDate(int shiftDays) {
+        return LocalDate.now()
+                .plusDays(shiftDays)
+                .format(DateTimeFormatter.ofPattern(MM_yy));
     }
 
-    public static CardInfo getFirstCardInfo() {
-        return new CardInfo("1111 2222 3333 4444");
-    }
+        public static String getValidCardHolderName() {
+            return "Ivan Ivanov";
+        }
 
-    public static CardInfo getSecondCardInfo() {
-        return new CardInfo("5555 6666 7777 8888");
-    }
+        @Value
+        public static class AuthInfo {
+            String login;   // номер карты
+            String password; // CVC
+        }
 
-    public static int generateValidAmount(int balance) {
-        return Math.abs(balance) / 20;
-    }
-
-    public static int generateInvalidAmount(int balance) {
-        return Math.abs(balance) + 1;
-    }
-
-    @Value
-    public static class VerificationCode {
-        String code;
-    }
-
-    @Value
-    public static class CardInfo {
-        String cardNumber;
-        String testId;
-    }
-
-    @Value
-    public static class AuthInfo {
-        String login;
-        String password;
-    }
 }
