@@ -5,15 +5,19 @@ import com.codeborne.selenide.SelenideElement;
 import ru.netology.Data.DataHelper;
 
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.*;
+
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
+
 public class PaymentPage {
 
-    private SelenideElement findInputByLabel(String labelText) {
+
+    private static SelenideElement findInputByLabel(String labelText) {
         return $$(".input__top")
                 .filter(exactText(labelText))
                 .first()
@@ -21,44 +25,49 @@ public class PaymentPage {
                 .$("input.input__control");
     }
 
-    public PaymentPage fillForm(DataHelper.AuthInfo cardInfo, String holder, String month, String year, String cvc) {
-        var cardNumberField = findInputByLabel("Номер карты");
-        var monthField      = findInputByLabel("Месяц");
-        var yearField       = findInputByLabel("Год");
-        var ownerField      = findInputByLabel("Владелец");
-        var cvcField        = findInputByLabel("CVC/CVV");
+    // findInputByLabel
 
-        cardNumberField.setValue(cardInfo.getLogin());
-        ownerField.val(holder);
-        monthField.val(month);
-        yearField.val(year);
-        cvcField.val(cvc);
+    private static final SelenideElement cardNumberField = findInputByLabel("Номер карты");
+    private static final SelenideElement monthField = findInputByLabel("Месяц");
+    private static final SelenideElement yearField = findInputByLabel("Год");
+    private static final SelenideElement ownerField = findInputByLabel("Владелец");
+    private static final SelenideElement cvcField = findInputByLabel("CVC/CVV");
 
-        return this;
+
+    private static final SelenideElement submit = $(byText("Продолжить"));
+    private static final SelenideElement NotificationOk = $(".notification_status_ok");
+    private static final SelenideElement NotificationError = $(".notification_status_error");
+
+
+    public static void fillForm(DataHelper.CardInfo cardInfo) {
+
+        cardNumberField.setValue(cardInfo.getCardNumber());
+        monthField.setValue(cardInfo.getMonth());
+        yearField.setValue(cardInfo.getYear());
+        ownerField.setValue(cardInfo.getOwner());
+        cvcField.setValue(cardInfo.getCvc());
+        submit.click();
+
+
     }
 
-    public PaymentPage fillWithApprovedData() {
-        var card = DataHelper.getApprovedCard();
-        var holderName = DataHelper.getValidCardHolderName();
 
-        return fillForm(
-                card,
-                holderName,
-                "08",
-                "26",
-                card.getPassword()
-        );
+    public static void getNotificationOk() {
+
+        NotificationOk.shouldBe(visible, Duration.ofSeconds(12))
+                .shouldHave(text("Успешно"), text("Операция одобрена Банком"));
+    }
+    public static void getNotificationError() {
+
+        NotificationError.shouldBe(visible, Duration.ofSeconds(12))
+                .shouldHave(text("Ошибка"), text("Ошибка! Банк отказал в проведении операции."));
     }
 
-    public void submit() {
-        // Вариант 1: по data-testid
-        $(byText("Продолжить")).click();
-        // Если нет такого атрибута — раскомментируй строку ниже и закомментируй выше:
-        // $(byText("Продолжить")).click();
+    public static void checkFieldError(String fieldName, String expectedText) {
+        $$(".input__sub")
+                .findBy(text(expectedText))
+                .shouldBe(visible, Duration.ofSeconds(6));
+
     }
 
-    public String getSuccessMessage() {
-
-        return $(".notification.notification_status_ok").getText();
-    }
 }

@@ -2,6 +2,7 @@ package ru.netology.Page;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import ru.netology.Data.DataHelper;
 
 
 import static com.codeborne.selenide.Selectors.byText;
@@ -18,8 +19,9 @@ public class StartPage {
     public PaymentPage openPaymentFormForBuy() {
         buyButton.shouldBe(Condition.visible, Condition.enabled);
         buyButton.click();
-        waitForForm();
+
         return new PaymentPage();
+
     }
 
     /**
@@ -28,12 +30,12 @@ public class StartPage {
     public PaymentPage openPaymentFormForCredit() {
         buyCreditButton.shouldBe(Condition.visible, Condition.enabled);
         buyCreditButton.click();
-        waitForForm();
         return new PaymentPage();
+
     }
 
     // Вспомогательный метод: ждём, пока форма начнёт отрисовываться
-    private void waitForForm() {
-        $(".input__top").shouldBe(Condition.visible);
-    }
+  //  private void waitForForm() {
+  //      $(".input__top").shouldBe(Condition.visible);
+   // }
 }
