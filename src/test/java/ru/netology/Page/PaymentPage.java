@@ -25,7 +25,7 @@ public class PaymentPage {
                 .$("input.input__control");
     }
 
-    // findInputByLabel
+
 
     private static final SelenideElement cardNumberField = findInputByLabel("Номер карты");
     private static final SelenideElement monthField = findInputByLabel("Месяц");

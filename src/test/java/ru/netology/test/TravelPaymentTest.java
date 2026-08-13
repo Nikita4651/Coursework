@@ -2,8 +2,7 @@ package ru.netology.test;
 
 
 import static com.codeborne.selenide.Selenide.*;
-import static java.time.LocalDate.now;
-import static ru.netology.Data.DataHelper.getValidYear;
+;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -15,8 +14,7 @@ import ru.netology.Data.DataHelper;
 import ru.netology.Page.PaymentPage;
 import ru.netology.Page.StartPage;
 
-import java.time.LocalDate;
-import java.time.Year;
+
 
 
 public class TravelPaymentTest {
