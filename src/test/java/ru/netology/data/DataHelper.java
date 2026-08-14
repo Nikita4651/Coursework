@@ -1,4 +1,4 @@
-package ru.netology.Data;
+package ru.netology.data;
 
 
 import com.github.javafaker.Faker;
@@ -62,20 +62,22 @@ public class DataHelper {
     }
 
     public static String getValidOwner() {
-        return "Ivan Ivanov";
+        return FAKER.funnyName().name() + "" + FAKER.funnyName().name();
     }
+
 
     public static String getCyrillic() {
         return "Иванов";
     }
 
     public static String getValidCvc() {
-        return "111";
+        return FAKER.number().digits(3);
     }
 
     public static String getInValidCvc() {
-        return "12";
+        return FAKER.number().digits(2);
     }
+
 
     public static String getNumbers() {
         return "1111 2222 3333";

@@ -1,8 +1,7 @@
-package ru.netology.Page;
+package ru.netology.page;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-import ru.netology.Data.DataHelper;
+import ru.netology.data.DataHelper;
 
 
 import java.time.Duration;
@@ -35,8 +34,8 @@ public class PaymentPage {
 
 
     private static final SelenideElement submit = $(byText("Продолжить"));
-    private static final SelenideElement NotificationOk = $(".notification_status_ok");
-    private static final SelenideElement NotificationError = $(".notification_status_error");
+    private static final SelenideElement notificationOk = $(".notification_status_ok");
+    private static final SelenideElement notificationError = $(".notification_status_error");
 
 
     public static void fillForm(DataHelper.CardInfo cardInfo) {
@@ -54,12 +53,12 @@ public class PaymentPage {
 
     public static void getNotificationOk() {
 
-        NotificationOk.shouldBe(visible, Duration.ofSeconds(12))
+        notificationOk.shouldBe(visible, Duration.ofSeconds(12))
                 .shouldHave(text("Успешно"), text("Операция одобрена Банком"));
     }
     public static void getNotificationError() {
 
-        NotificationError.shouldBe(visible, Duration.ofSeconds(12))
+       notificationError.shouldBe(visible, Duration.ofSeconds(12))
                 .shouldHave(text("Ошибка"), text("Ошибка! Банк отказал в проведении операции."));
     }
 

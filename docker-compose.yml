@@ -1,23 +1,16 @@
-version: "3.8"
+
 
 services:
-  db:
-    image: postgres:15-alpine
+  coursework-db:
+    image: mysql:8.0-oracle
     restart: always
     container_name: Coursework-db
     environment:
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: appdb
+      MYSQL_DATABASE: shop_db
+      MYSQL_USER: app
+      MYSQL_PASSWORD: pass
+      MYSQL_ROOT_PASSWORD: root
     ports:
-      - "8080:8080"
+      - "3306:3306"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d appdb"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  pgdata:
+      - ./init-scripts:/docker-entrypoint-initdb.d
