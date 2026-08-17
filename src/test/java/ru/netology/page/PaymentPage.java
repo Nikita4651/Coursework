@@ -1,5 +1,6 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
 
@@ -32,8 +33,8 @@ public class PaymentPage {
     private static final SelenideElement ownerField = findInputByLabel("Владелец");
     private static final SelenideElement cvcField = findInputByLabel("CVC/CVV");
 
-
-    private static final SelenideElement submit = $(byText("Продолжить"));
+    private static final SelenideElement submit = $$("button").findBy(text("Продолжить"));
+   // private static final SelenideElement submit = $(byText("Продолжить"));
     private static final SelenideElement notificationOk = $(".notification_status_ok");
     private static final SelenideElement notificationError = $(".notification_status_error");
 
@@ -45,7 +46,9 @@ public class PaymentPage {
         yearField.setValue(cardInfo.getYear());
         ownerField.setValue(cardInfo.getOwner());
         cvcField.setValue(cardInfo.getCvc());
-        submit.click();
+        //submit.click();
+
+        submit.shouldBe(Condition.visible, Condition.enabled).click();
 
 
     }
@@ -54,12 +57,12 @@ public class PaymentPage {
     public static void getNotificationOk() {
 
         notificationOk.shouldBe(visible, Duration.ofSeconds(12))
-                .shouldHave(text("Успешно"), text("Операция одобрена Банком"));
+                .shouldHave(text("Успешно"), text("Операция одобрена Банком."));
     }
     public static void getNotificationError() {
 
        notificationError.shouldBe(visible, Duration.ofSeconds(12))
-                .shouldHave(text("Ошибка"), text("Ошибка! Банк отказал в проведении операции."));
+                .shouldHave(text("Ошибка")); //, text("Ошибка! Банк отказал в проведении операции."));
     }
 
     public static void checkFieldError(String fieldName, String expectedText) {

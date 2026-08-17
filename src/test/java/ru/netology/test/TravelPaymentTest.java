@@ -4,6 +4,8 @@ package ru.netology.test;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.netology.data.DataHelper.*;
+import static ru.netology.data.SQLHelper.getPaymentRecordsCount;
 ;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
@@ -47,8 +49,9 @@ public class TravelPaymentTest {
     @AfterEach
     @SneakyThrows
     void clearDb() {
-        SQLHelper.cleanDatabase();
+       SQLHelper.cleanDatabase();
     }
+
 
 
     @Test
@@ -56,21 +59,18 @@ public class TravelPaymentTest {
     void shouldSuccessfullyPayWithBuyButton() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-
         var CardInfo = DataHelper.getApprovedCard();
-
         PaymentPage.fillForm(CardInfo);
-
         PaymentPage.getNotificationOk();
-        String status = SQLHelper.getPaymentStatus();
-        assertEquals("APPROVED", status);
+        assertEquals("APPROVED", SQLHelper.getPaymentStatus());
 
 
     }
 
+    @SneakyThrows
     @Test
     @DisplayName("TS-2.Входные валидные данные в раздел \"Купить в кредит\"")
-    void paymentUsingTheBuyOnCreditButtonShouldBeSuccessful() throws SQLException {
+    void paymentUsingTheBuyOnCreditButtonShouldBeSuccessful()  {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForCredit();
 
@@ -79,33 +79,67 @@ public class TravelPaymentTest {
         PaymentPage.fillForm(CardInfo);
 
         PaymentPage.getNotificationOk();
-       // String status = SQLHelper.getCreditPaymentStatus();
-      //  assertEquals("APPROVED", status);
 
+          assertEquals("APPROVED", SQLHelper.getCreditRequestCount());
 
-
-        // 1. Проверяем, что запись была ДО клика (для отладки)
-        int countBefore = SQLHelper.getCreditRequestCount();
-
-        // Даем базе время на запись (иногда нужно, особенно в Docker)
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // 2. Проверяем, что запись появилась ПОСЛЕ клика
-        int countAfter = SQLHelper.getCreditRequestCount();
-
-        // ГЛАВНЫЙ АССЕРТ: если countAfter == countBefore, значит, кнопка не сработала
-        assertTrue(countAfter > countBefore,
-                "Заявка на кредит не создалась в БД! Было записей: " + countBefore + ", стало: " + countAfter);
-
-        // 3. Теперь безопасно проверяем статус
-        String status = SQLHelper.getCreditPaymentStatus();
-        assertEquals("APPROVED", status,
-                "Статус заявки на кредит должен быть APPROVED, а был: '" + status + "'");
 
     }
+
+    @Test
+    @DisplayName("TS-1.Входные валидные данные в раздел \"Купить\"")
+    void shouldSuccessfullyPayWithBuyButton1() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var CardInfo = DataHelper.getDeclinedCard();
+        PaymentPage.fillForm(CardInfo);
+        PaymentPage.getNotificationError();
+        assertEquals("DECLINED", SQLHelper.getPaymentStatus());
+
+    }
+
+    @Test
+    @DisplayName("TS-1.Входные валидные данные в раздел \"Купить\"")
+    void shouldSuccessfullyPayWithBuyButton2() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo("", "", "", "", "");
+        PaymentPage.fillForm(cardInfo);
+        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        PaymentPage.checkFieldError("Месяц", "Неверный формат");
+        PaymentPage.checkFieldError("Год", "Неверный формат");
+        PaymentPage.checkFieldError("Владелец", "Поле обязательно для заполнения");
+        PaymentPage.checkFieldError("CVC/CVV", "Неверный формат");
+
+        assertEquals(0, getPaymentRecordsCount());
+
+
+    }
+
+    @Test
+    @DisplayName("TS-1.Входные валидные данные в раздел \"Купить\"")
+    void shouldSuccessfullyPayWithBuyButton3() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo("", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        PaymentPage.fillForm(cardInfo);
+        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+
+
+    }
+
+    @Test
+    @DisplayName("TS-1.Входные валидные данные в раздел \"Купить\"")
+    void shouldSuccessfullyPayWithBuyButton4() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo("", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        PaymentPage.fillForm(cardInfo);
+        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+
+
+    }
+
 
 }

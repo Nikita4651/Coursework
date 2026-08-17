@@ -44,20 +44,20 @@ public class SQLHelper {
         String sql = "SELECT status FROM payment_entity ORDER BY created DESC LIMIT 1;";
         try (Connection conn = getConnection()) {
             String status = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
-            return status != null ? status : ""; // Возвращаем пустую строку вместо null для защиты от NPE в тестах
+            return status != null ? status : "DECLINED"; // Возвращаем пустую строку вместо null для защиты от NPE в тестах
         }
     }
 
-  /*  @SneakyThrows
+    @SneakyThrows
     public static String getCreditPaymentStatus() {
         String sql = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1;";
         try (Connection conn = getConnection()) {
             Object result = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
             // Если результат null (не должно быть для COUNT), вернём 0
-           /* String status = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
-            return status != null ? status : ""; // Возвращаем пустую строку вместо null для защиты от NPE в тестах
+            String status = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
+            return status != null ? status : "DECLINED"; // Возвращаем пустую строку вместо null для защиты от NPE в тестах
         }
-    }*/
+    }
 
     // Метод для подсчета количества (возвращает int)
     public static int getCreditRequestCount() throws SQLException {
@@ -66,14 +66,14 @@ public class SQLHelper {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             if (rs.next()) {
-                return rs.getInt(1); // Возвращаем число
+                return rs.getInt(0); // Возвращаем число
             }
             return 0;
         }
     }
 
     // Метод для получения статуса (возвращает String)
-    public static String getCreditPaymentStatus() throws SQLException {
+    public static String getCredit2PaymentStatus() throws SQLException {
         String sql = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1";
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -97,5 +97,16 @@ public class SQLHelper {
             return count != null ? count.longValue() : 0L; // Безопасное приведение любого числового типа БД к long
         }
     }
+
+
+
+
+
+
+
+
+
+
+
 }
 

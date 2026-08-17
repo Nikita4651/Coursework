@@ -2,7 +2,7 @@
 
 services:
   coursework-db:
-    image: mysql:8.0-oracle
+    image: mysql:8.0
     restart: always
     container_name: Coursework-db
     environment:

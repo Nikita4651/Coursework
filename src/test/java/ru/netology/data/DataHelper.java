@@ -26,7 +26,7 @@ public class DataHelper {
     }
 
     public static CardInfo getDeclinedCard() {
-        return new CardInfo("5555666677778888", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        return new CardInfo("5555666677775555", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
     }
 
     public static String getValidMonth() {

@@ -35,32 +35,14 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.36'
     testImplementation 'org.slf4j:slf4j-simple:2.0.3'
 
-}
 
-test {
-    useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
-    systemProperty 'db.url', System.getProperty('db.url', "jdbc:mysql://localhost:8080/db")
-    systemProperty 'chromeoptions.prefs',
-            System.getProperty('chromeoptions.prefs', "profile.password_manager_leak_detection=false")
-}
-
-dependencies {
-    testImplementation 'com.codeborne:selenide:6.19.1'
-    testImplementation 'com.mysql:mysql-connector-j:8.0.32'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
-    testImplementation 'commons-dbutils:commons-dbutils:1.7'
-    testImplementation 'com.github.javafaker:javafaker:1.0.2'
-    compileOnly 'org.projectlombok:lombok:1.18.36'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
-    testCompileOnly 'org.projectlombok:lombok:1.18.36'
 
 }
 
 test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
-    systemProperty 'db.url', System.getProperty('db.url', "jdbc:mysql://localhost:3306/db")
+    systemProperty 'db.url', System.getProperty('db.url', "jdbc:mysql://localhost:3306/shop_db?useSSL=false&allowPublicKeyRetrieval=true")
     systemProperty 'chromeoptions.prefs',
             System.getProperty('chromeoptions.prefs', "profile.password_manager_leak_detection=false")
 }
