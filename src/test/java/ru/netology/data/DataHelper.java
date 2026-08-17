@@ -40,7 +40,7 @@ public class DataHelper {
     }
     public static String getMinusMonth() {
         return LocalDate.now()
-                .minusMonths(5)
+                .minusMonths(3)
                 .format(DateTimeFormatter.ofPattern("MM"));
     }
 
@@ -57,7 +57,7 @@ public class DataHelper {
 
     public static String getMinusYear() {
         return LocalDate.now()
-                .minusMonths(2)
+                .minusYears(5)
                 .format(DateTimeFormatter.ofPattern("yy"));
     }
 
