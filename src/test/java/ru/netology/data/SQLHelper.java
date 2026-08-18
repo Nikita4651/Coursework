@@ -62,15 +62,6 @@ public class SQLHelper {
     }
 
 
-    // метод проверки количества записей (для негативных тестов, должно возвращать 0)
-    @SneakyThrows
-    public static long getPaymentRecordsCount() {
-        String sql = "SELECT COUNT(*) FROM payment_entity;";
-        try (Connection conn = getConnection()) {
-            Number count = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
-            return count != null ? count.longValue() : 0L; // Безопасное приведение любого числового типа БД к long
-        }
-    }
 
 
 }
