@@ -3,7 +3,7 @@ package ru.netology.test;
 
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+;
 import static ru.netology.data.DataHelper.*;
 import static ru.netology.data.SQLHelper.getPaymentRecordsCount;
 ;
@@ -18,8 +18,6 @@ import ru.netology.data.DataHelper;
 import ru.netology.data.SQLHelper;
 import ru.netology.page.PaymentPage;
 import ru.netology.page.StartPage;
-
-import java.sql.SQLException;
 
 
 public class TravelPaymentTest {
@@ -49,9 +47,8 @@ public class TravelPaymentTest {
     @AfterEach
     @SneakyThrows
     void clearDb() {
-       SQLHelper.cleanDatabase();
+        SQLHelper.cleanDatabase();
     }
-
 
 
     @Test
@@ -60,8 +57,8 @@ public class TravelPaymentTest {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
         var CardInfo = DataHelper.getApprovedCard();
-        PaymentPage.fillForm(CardInfo);
-        PaymentPage.getNotificationOk();
+        paymentPage.fillForm(CardInfo);
+        paymentPage.getNotificationOk();
         assertEquals("APPROVED", SQLHelper.getPaymentStatus());
 
 
@@ -70,21 +67,16 @@ public class TravelPaymentTest {
     @SneakyThrows
     @Test
     @DisplayName("TS-2.Входные валидные данные в раздел \"Купить в кредит\"")
-    void shouldSuccessfullyPayWithBuyOnCreditButton()  {
+    void shouldSuccessfullyPayWithBuyOnCreditButton() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForCredit();
-
         var CardInfo = DataHelper.getApprovedCreditCard();
-
-        PaymentPage.fillForm(CardInfo);
-
-        PaymentPage.getNotificationOk();
-
-          assertEquals("APPROVED", SQLHelper.getCreditRequestCount());
+        paymentPage.fillForm(CardInfo);
+        paymentPage.getNotificationOk();
+        assertEquals("APPROVED", SQLHelper.getCreditPaymentStatus());
 
 
     }
-
 
 
     @Test
@@ -93,12 +85,12 @@ public class TravelPaymentTest {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
         var cardInfo = new DataHelper.CardInfo("", "", "", "", "");
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
-        PaymentPage.checkFieldError("Месяц", "Неверный формат");
-        PaymentPage.checkFieldError("Год", "Неверный формат");
-        PaymentPage.checkFieldError("Владелец", "Поле обязательно для заполнения");
-        PaymentPage.checkFieldError("CVC/CVV", "Неверный формат");
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Номер карты", "Неверный формат");
+        paymentPage.checkFieldError("Месяц", "Неверный формат");
+        paymentPage.checkFieldError("Год", "Неверный формат");
+        paymentPage.checkFieldError("Владелец", "Поле обязательно для заполнения");
+        paymentPage.checkFieldError("CVC/CVV", "Неверный формат");
 
         assertEquals(0, getPaymentRecordsCount());
 
@@ -110,9 +102,10 @@ public class TravelPaymentTest {
     void shouldShowInvalidFormatErrorWhenCardFieldIsEmpty() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo("", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(""
+                , getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Номер карты", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
 
@@ -124,8 +117,8 @@ public class TravelPaymentTest {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
         var CardInfo = DataHelper.getDeclinedCard();
-        PaymentPage.fillForm(CardInfo);
-        PaymentPage.getNotificationError();
+        paymentPage.fillForm(CardInfo);
+        paymentPage.getNotificationError();
         assertEquals("DECLINED", SQLHelper.getPaymentStatus());
 
     }
@@ -136,9 +129,10 @@ public class TravelPaymentTest {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
 
-        var cardInfo = new DataHelper.CardInfo(DataHelper.getNumbers(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(DataHelper
+                .getNumbers(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Номер карты", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -148,13 +142,13 @@ public class TravelPaymentTest {
     void shouldShowInvalidFormatErrorWhenCardFieldContainsSpecialCharacters() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(DataHelper.getSymbol(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(DataHelper
+                .getSymbol(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Номер карты", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
-
 
 
     @Test
@@ -162,9 +156,10 @@ public class TravelPaymentTest {
     void shouldShowInvalidFormatErrorWhenCardFieldContainsLatinLetters() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(DataHelper.getValidOwner(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(DataHelper
+                .getValidOwner(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Номер карты", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -175,9 +170,10 @@ public class TravelPaymentTest {
     void shouldShowInvalidFormatErrorWhenCardFieldContainsCyrillicCharacters() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(DataHelper.getCyrillic(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Номер карты", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(DataHelper
+                .getCyrillic(), getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Номер карты", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -188,9 +184,10 @@ public class TravelPaymentTest {
     void shouldShowInvalidFormatErrorWhenMonthFieldIsEmpty() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), "", getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Месяц", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), "", getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Месяц", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -201,9 +198,10 @@ public class TravelPaymentTest {
     void shouldAllowPaymentWithPastMonth() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getMinusMonth(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.getNotificationOk();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getMinusMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.getNotificationOk();
         assertEquals(0, getPaymentRecordsCount());
 /** тут баг */
     }
@@ -213,9 +211,10 @@ public class TravelPaymentTest {
     void shouldShowExpirationErrorWhenFutureMonthIsEntered() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getPlusMonth(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Месяц", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getPlusMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Месяц", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 /** тут баг */
     }
@@ -226,9 +225,10 @@ public class TravelPaymentTest {
     void shouldPreventInputOfSpecialCharactersInMonthField() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getSymbol(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Месяц", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getSymbol(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Месяц", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -239,9 +239,10 @@ public class TravelPaymentTest {
     void shouldPreventInputOfLatinLettersInMonthField() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getValidOwner(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Месяц", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidOwner(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Месяц", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -252,9 +253,10 @@ public class TravelPaymentTest {
     void shouldPreventInputOfCyrillicCharactersInMonthField() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getCyrillic(), getValidYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Месяц", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getCyrillic(), getValidYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Месяц", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -265,9 +267,10 @@ public class TravelPaymentTest {
     void shouldShowInvalidFormatErrorWhenYearFieldIsEmpty() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getValidMonth(), "", getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Год", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), "", getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Год", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -278,9 +281,10 @@ public class TravelPaymentTest {
     void shouldShowExpirationErrorWhenPastYearIsEntered() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getValidMonth(), getMinusYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Год", "Истёк срок действия карты");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getMinusYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Год", "Истёк срок действия карты");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -290,9 +294,10 @@ public class TravelPaymentTest {
     void shouldShowInvalidFormatErrorWhenFutureYearIsEntered() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getValidMonth(), getPlusYear(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Год", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getPlusYear(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Год", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 /** тут баг */
     }
@@ -303,9 +308,10 @@ public class TravelPaymentTest {
     void shouldPreventInputOfSpecialCharactersInYearField() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getValidMonth(), getSymbol(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Год", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getSymbol(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Год", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -316,9 +322,10 @@ public class TravelPaymentTest {
     void shouldPreventInputOfLatinLettersInYearField() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getValidMonth(), getValidOwner(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Год", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidOwner(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Год", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
@@ -329,16 +336,139 @@ public class TravelPaymentTest {
     void shouldPreventInputOfCyrillicCharactersInYearField() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForBuy();
-        var cardInfo = new DataHelper.CardInfo(getApprovedCard().getCardNumber(), getValidMonth(), getCyrillic(), getValidOwner(), getValidCvc());
-        PaymentPage.fillForm(cardInfo);
-        PaymentPage.checkFieldError("Год", "Неверный формат");
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getCyrillic(), getValidOwner(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Год", "Неверный формат");
         assertEquals(0, getPaymentRecordsCount());
 
     }
 
 
+    @Test
+    @DisplayName("TS-22.входные невалидные данные в разделе \"Купить\" поле владелец оставить пустым")
+    void shouldShowInvalidFormatErrorWhenOwnerFieldIsEmpty() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), "", getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Владелец", "Поле обязательно для заполнения");
+        assertEquals(0, getPaymentRecordsCount());
+
+    }
 
 
+    @Test
+    @DisplayName("TS-23.входные невалидные данные в разделе \"Купить\" ввести кириллицу в поле владелеца")
+    void shouldShowInvalidFormatErrorWhenOwnerFieldContainsCyrillic() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getCyrillic(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Владелец", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+/** тут баг */
+    }
+
+
+    @Test
+    @DisplayName("TS-24.входные невалидные данные в разделе \"Купить\" ввести в поле цифры в поле владельца")
+    void shouldShowInvalidFormatErrorWhenOwnerFieldContainsDigits() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getNumbers(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Владелец", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+/** тут баг */
+    }
+
+
+    @Test
+    @DisplayName("TS-25.входные невалидные данные в разделе \"Купить\" ввести в поле спецсиволы в поле владелеца")
+    void shouldShowInvalidFormatErrorWhenOwnerFieldContainsSpecialCharacters() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getSymbol(), getValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("Владелец", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+/** тут баг */
+    }
+
+
+    @Test
+    @DisplayName("TS-26.входные невалидные данные в разделе \"Купить\" оставить  поле пустым cvc")
+    void shouldShowInvalidFormatErrorWhenCvcFieldIsEmpty() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getValidOwner(), "");
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("CVC/CVV", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+
+    }
+
+
+    @Test
+    @DisplayName("TS-27.входные невалидные данные в разделе \"Купить\" ввести в поле cvc меньше 3 значного кода")
+    void shouldShowInvalidFormatErrorWhenCvcIsLessThanThreeDigits() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getValidOwner(), getInValidCvc());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("CVC/CVV", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+
+    }
+
+
+    @Test
+    @DisplayName("TS-28.входные невалидные данные в разделе \"Купить\" в поле cvc ввод спецсимволов")
+    void shouldPreventInputOfSpecialCharactersInCvcField() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getValidOwner(), getSymbol());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("CVC/CVV", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+
+    }
+
+
+    @Test
+    @DisplayName("TS-29.входные невалидные данные в разделе \"Купить\" в поле cvc ввод латинских букв")
+    void shouldPreventInputOfLatinLettersInCvcField() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getValidOwner(), getValidOwner());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("CVC/CVV", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+
+    }
+
+
+    @Test
+    @DisplayName("TS-30.входные невалидные данные в разделе \"Купить\" в поле cvc ввод кириллицу")
+    void shouldPreventInputOfCyrillicCharactersInCvcField() {
+        StartPage startPage = new StartPage();
+        startPage.openPaymentFormForBuy();
+        var cardInfo = new DataHelper.CardInfo(getApprovedCard()
+                .getCardNumber(), getValidMonth(), getValidYear(), getValidOwner(), getCyrillic());
+        paymentPage.fillForm(cardInfo);
+        paymentPage.checkFieldError("CVC/CVV", "Неверный формат");
+        assertEquals(0, getPaymentRecordsCount());
+
+    }
 
 
 }

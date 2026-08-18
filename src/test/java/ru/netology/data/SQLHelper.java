@@ -13,14 +13,15 @@ public class SQLHelper {
     private static final QueryRunner QUERY_RUNNER = new QueryRunner();
 
 
+    private static final String URL = "jdbc:mysql://localhost:3306/shop_db?useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String USER = "app";
+    private static final String PASS = "pass";
 
-        private static final String URL = "jdbc:mysql://localhost:3306/shop_db?useSSL=false&allowPublicKeyRetrieval=true";
-        private static final String USER = "app";
-        private static final String PASS = "pass";
 
+    private SQLHelper() {
+    }
 
-    private SQLHelper() {}
-        @SneakyThrows
+    @SneakyThrows
     private static Connection getConnection() {
         return DriverManager.getConnection(URL, USER, PASS);
     }
@@ -38,6 +39,7 @@ public class SQLHelper {
             QUERY_RUNNER.execute(conn, deleteCredit);
         }
     }
+
     // метод для получения статуса последней дебетовой оплаты (APPROVED / DECLINED)
     @SneakyThrows
     public static String getPaymentStatus() {
@@ -59,34 +61,6 @@ public class SQLHelper {
         }
     }
 
-    // Метод для подсчета количества (возвращает int)
-    public static int getCreditRequestCount() throws SQLException {
-        String sql = "SELECT COUNT(*) AS total FROM credit_request_entity";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            if (rs.next()) {
-                return rs.getInt(0); // Возвращаем число
-            }
-            return 0;
-        }
-    }
-
-    // Метод для получения статуса (возвращает String)
-    public static String getCredit2PaymentStatus() throws SQLException {
-        String sql = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            if (rs.next()) {
-                String status = rs.getString("status");
-                return status != null ? status : "";
-            }
-            return "";
-        }
-    }
-
 
     // метод проверки количества записей (для негативных тестов, должно возвращать 0)
     @SneakyThrows
@@ -97,15 +71,6 @@ public class SQLHelper {
             return count != null ? count.longValue() : 0L; // Безопасное приведение любого числового типа БД к long
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 }

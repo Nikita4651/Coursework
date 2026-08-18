@@ -9,7 +9,7 @@ import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.*;
 
-import static com.codeborne.selenide.Selectors.byText;
+
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -26,7 +26,6 @@ public class PaymentPage {
     }
 
 
-
     private static final SelenideElement cardNumberField = findInputByLabel("Номер карты");
     private static final SelenideElement monthField = findInputByLabel("Месяц");
     private static final SelenideElement yearField = findInputByLabel("Год");
@@ -34,7 +33,7 @@ public class PaymentPage {
     private static final SelenideElement cvcField = findInputByLabel("CVC/CVV");
 
     private static final SelenideElement submit = $$("button").findBy(text("Продолжить"));
-   // private static final SelenideElement submit = $(byText("Продолжить"));
+
     private static final SelenideElement notificationOk = $(".notification_status_ok");
     private static final SelenideElement notificationError = $(".notification_status_error");
 
@@ -59,10 +58,11 @@ public class PaymentPage {
         notificationOk.shouldBe(visible, Duration.ofSeconds(12))
                 .shouldHave(text("Успешно"), text("Операция одобрена Банком."));
     }
+
     public static void getNotificationError() {
 
-       notificationError.shouldBe(visible, Duration.ofSeconds(12))
-                .shouldHave(text("Ошибка")); //, text("Ошибка! Банк отказал в проведении операции."));
+        notificationError.shouldBe(visible, Duration.ofSeconds(12))
+                .shouldHave(text("Ошибка"));
     }
 
     public static void checkFieldError(String fieldName, String expectedText) {

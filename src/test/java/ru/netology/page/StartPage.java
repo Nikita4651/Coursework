@@ -34,7 +34,7 @@ public class StartPage {
     }
 
     // Вспомогательный метод: ждём, пока форма начнёт отрисовываться
-  //  private void waitForForm() {
-  //      $(".input__top").shouldBe(Condition.visible);
-   // }
+    //  private void waitForForm() {
+    //      $(".input__top").shouldBe(Condition.visible);
+    // }
 }

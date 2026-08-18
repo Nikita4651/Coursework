@@ -33,11 +33,13 @@ public class DataHelper {
         return LocalDate.now()
                 .format(DateTimeFormatter.ofPattern("MM"));
     }
+
     public static String getPlusMonth() {
         return LocalDate.now()
                 .plusMonths(4)
                 .format(DateTimeFormatter.ofPattern("MM"));
     }
+
     public static String getMinusMonth() {
         return LocalDate.now()
                 .minusMonths(3)
@@ -67,7 +69,7 @@ public class DataHelper {
 
 
     public static String getCyrillic() {
-        return "Иванов";
+        return "Иван Иванов";
     }
 
     public static String getValidCvc() {
@@ -86,8 +88,6 @@ public class DataHelper {
     public static String getSymbol() {
         return "@#!%";
     }
-
-
 
 
     @Value
