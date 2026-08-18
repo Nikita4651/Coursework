@@ -20,13 +20,8 @@ public class DataHelper {
 
     }
 
-    public static CardInfo getApprovedCreditCard() {
-        return new CardInfo("5555666677778888", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
-
-    }
-
     public static CardInfo getDeclinedCard() {
-        return new CardInfo("5555666677775555", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
+        return new CardInfo("5555666677778888", getValidMonth(), getValidYear(), getValidOwner(), getValidCvc());
     }
 
     public static String getValidMonth() {
@@ -93,9 +88,9 @@ public class DataHelper {
     @Value
     public static class CardInfo {
         String cardNumber;// номер карты
-        String month;//
-        String year;
-        String owner;
+        String month;// месяц
+        String year;// год
+        String owner;// Владелец
         String cvc; // CVC
     }
 

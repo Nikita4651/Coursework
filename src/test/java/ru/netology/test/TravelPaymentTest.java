@@ -72,7 +72,7 @@ public class TravelPaymentTest {
     void shouldSuccessfullyPayWithBuyOnCreditButton() {
         StartPage startPage = new StartPage();
         startPage.openPaymentFormForCredit();
-        var CardInfo = DataHelper.getApprovedCreditCard();
+        var CardInfo = DataHelper.getApprovedCard();
         paymentPage.fillForm(CardInfo);
         paymentPage.getNotificationOk();
         assertEquals("APPROVED", SQLHelper.getCreditPaymentStatus());
