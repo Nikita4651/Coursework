@@ -64,6 +64,3 @@
 Сформировать обновлённый Allure‑отчёт командой ./gradlew clean test allureReport,
 чтобы подтвердить устранение дефектов и зафиксировать актуальное состояние покрытия
 
-### Скриншот Allure-отчета:
-<img width="1880" height="936" alt="allure1" src="https://github.com/user-attachments/assets/4dc45168-c902-4096-aa2d-85fb5c39177c" />
-<img width="1872" height="932" alt="allure2" src="https://github.com/user-attachments/assets/71aefd14-9a60-467e-a5b7-4e0aebde626b" />
