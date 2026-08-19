@@ -9,12 +9,12 @@
 2. [отчёт об автоматизации](https://github.com/Nikita4651/Coursework/blob/main/docs/Summary.md).
 
 ## Начало работы
-Перед работой с проектом следует ознакомиться с перечнем необходимых инструментов (см. п. 2 [Плана](https://github.com/Nikita4651/Coursework/blob/main/docs/Plan.md))
+Перед работой с проектом следует ознакомиться с перечнем необходимых инструментов (см. PL. 2 [Плана](https://github.com/Nikita4651/Coursework/blob/main/docs/Plan.md))
 ## Запуск проекта
 1. Клонировать репозиторий, расположенный по адресу: https://github.com/Nikita4651/Coursework.git (команда в терминале  `git clone https://github.com/Nikita4651/Coursework.git`).
 2. Открыть клонированный проект в IntelliJ IDEA.
 3. Запустить приложение Запустить Docker Desktop.
-4. В терминале IDE запустить конетейнер командой `docker compose up`, дождаться загрузки контейнера (сообщение `ready for connections`), до полного запуска контейнера рекомендуется подождпть 40-60 сек
+4. В терминале IDE запустить конетейнер командой `docker compose up`, дождаться загрузки контейнера (сообщение `ready for connections`), до полного запуска контейнера рекомендуется подождать 40-60 сек
 5. Открыть новый терминал и запустить приложение командой `java -jar artifacts/aqa-shop.jar`, дождаться загрузки приложения (сообщение `Started ShopApplication`).
 6. Устоновить на ПК Google Chrome
 7. Открыть в браузере страницу приложения по адресу: http://localhost:8080/.
