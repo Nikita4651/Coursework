@@ -45,7 +45,7 @@ public class PaymentPage {
         yearField.setValue(cardInfo.getYear());
         ownerField.setValue(cardInfo.getOwner());
         cvcField.setValue(cardInfo.getCvc());
-        //submit.click();
+
 
         submit.shouldBe(Condition.visible, Condition.enabled).click();
 

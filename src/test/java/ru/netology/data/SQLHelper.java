@@ -46,7 +46,7 @@ public class SQLHelper {
         String sql = "SELECT status FROM payment_entity ORDER BY created DESC LIMIT 1;";
         try (Connection conn = getConnection()) {
             String status = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
-            return status != null ? status : "DECLINED"; // Возвращаем пустую строку вместо null для защиты от NPE в тестах
+            return status != null ? status : "DECLINED";
         }
     }
 
@@ -55,9 +55,9 @@ public class SQLHelper {
         String sql = "SELECT status FROM credit_request_entity ORDER BY created DESC LIMIT 1;";
         try (Connection conn = getConnection()) {
             Object result = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
-            // Если результат null (не должно быть для COUNT), вернём 0
+
             String status = QUERY_RUNNER.query(conn, sql, new ScalarHandler<>());
-            return status != null ? status : "DECLINED"; // Возвращаем пустую строку вместо null для защиты от NPE в тестах
+            return status != null ? status : "DECLINED";
         }
     }
 

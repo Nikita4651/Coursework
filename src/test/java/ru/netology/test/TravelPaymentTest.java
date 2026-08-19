@@ -205,7 +205,7 @@ public class TravelPaymentTest {
         paymentPage.fillForm(cardInfo);
         paymentPage.getNotificationOk();
 
-/** тут баг */
+
     }
 
     @Test
@@ -218,7 +218,7 @@ public class TravelPaymentTest {
         paymentPage.fillForm(cardInfo);
         paymentPage.checkFieldError("Месяц", "Неверный формат");
 
-/** тут баг */
+
     }
 
 
@@ -301,7 +301,7 @@ public class TravelPaymentTest {
         paymentPage.fillForm(cardInfo);
         paymentPage.checkFieldError("Год", "Неверный формат");
 
-/** тут баг */
+
     }
 
 
@@ -371,7 +371,7 @@ public class TravelPaymentTest {
         paymentPage.fillForm(cardInfo);
         paymentPage.checkFieldError("Владелец", "Неверный формат");
 
-/** тут баг */
+
     }
 
 
@@ -385,7 +385,7 @@ public class TravelPaymentTest {
         paymentPage.fillForm(cardInfo);
         paymentPage.checkFieldError("Владелец", "Неверный формат");
 
-/** тут баг */
+
     }
 
 
@@ -399,7 +399,7 @@ public class TravelPaymentTest {
         paymentPage.fillForm(cardInfo);
         paymentPage.checkFieldError("Владелец", "Неверный формат");
 
-/** тут баг */
+
     }
 
 
